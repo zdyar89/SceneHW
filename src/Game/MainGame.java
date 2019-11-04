@@ -24,7 +24,6 @@ public class MainGame extends Game implements Scene {
     private Player player;
     private Scorekeeper scorekeeper;
     private SoundClip soundManager;
-    private SimpleMenu pauseMenu;
 	
     public MainGame() {
     	initUI(1280,720,"SceneHW");
@@ -33,10 +32,6 @@ public class MainGame extends Game implements Scene {
         player = new Player(new Vector2f(Game.ui.getWidth()/7, Game.ui.getHeight()/1.5f));
         marker = new Reticle();
         scorekeeper = Scorekeeper.getInstance();
-        pauseMenu = new SimpleMenu();
-        pauseMenu.addItem(new SimpleMenu.SelectableText(20, 20, 20, 20, "Continue", 1, 0, 0, 1, 1, 1), game);
-        pauseMenu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Exit Game", 1, 0, 0, 1, 1, 1), null);
-        pauseMenu.select(0);
     }
 
     @Override
@@ -51,8 +46,7 @@ public class MainGame extends Game implements Scene {
     @Override
     public void onKeyEvent(int key, int scancode, int action, int mods) {
         if (action == org.lwjgl.glfw.GLFW.GLFW_PRESS && key == GLFW.GLFW_KEY_BACKSPACE) {
-            game.setScene(pauseMenu);
-            game.gameLoop();
+            SceneManager.pause();
         }
     }
     

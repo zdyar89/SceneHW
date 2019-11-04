@@ -13,6 +13,7 @@ public class Player extends GameObject {
 	private Texture texture;
 	private float speed;
 	private float weight;
+	private float jumpability;
 
 	public Player(Vector2f origin) {
 		this.hitbox.setBounds((int) origin.x, (int) origin.y, 30, 30);
@@ -20,7 +21,8 @@ public class Player extends GameObject {
 		this.texture = new Texture("res/Textures/kirby.png");
 		this.direction = new Vector2f(0, 0);
 		this.speed = .04f;
-		this.weight = 0.01f;
+		this.weight = 1f;
+		this.jumpability = 30f;
 	}
 
 	@Override
@@ -38,10 +40,13 @@ public class Player extends GameObject {
 		if (Game.ui.keyPressed(GLFW.GLFW_KEY_D)) {
 			direction.x += 10;
 		}
+		if (Game.ui.keyPressed(GLFW.GLFW_KEY_SPACE)) {
+			direction.y -= jumpability;
+		}
 
 		fall();
-		move(delta);
 		fitToBounds(delta);
+		move(delta);
 		adjustHitBox();
 	}
 
@@ -51,7 +56,7 @@ public class Player extends GameObject {
 	}
 
 	private void fall() {
-		direction.y = MainGame.GRAVITY * weight;
+		direction.y += MainGame.GRAVITY * weight;
 	}
 
 	private void move(int delta) {
@@ -65,8 +70,8 @@ public class Player extends GameObject {
 	}
 
 	private void fitToBounds(int delta) {
-		int newX = (int) (direction.x * delta * speed);
-		int newY = (int) (direction.y * delta * speed);
+		int newX = (int) (direction.x * delta * speed) + hitbox.x;
+		int newY = (int) (direction.y * delta * speed) + hitbox.y;
 		if (newX < 0 || newX + hitbox.width > Game.ui.getWidth()) {
 			direction.x = 0;
 		}

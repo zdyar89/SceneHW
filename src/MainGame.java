@@ -27,7 +27,7 @@ public class MainGame extends Game implements Scene {
     private Reticle marker;
     private Player player;
     private Scorekeeper scorekeeper;
-    private SoundManager soundManager;
+    private SoundClip soundManager;
     private SimpleMenu pauseMenu = new SimpleMenu();
 	
     public MainGame() {

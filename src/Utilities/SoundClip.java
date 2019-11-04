@@ -1,8 +1,10 @@
+package Utilities;
+
 import edu.utc.game.Sound;
 
-public class SoundManager {
+public class SoundClip {
 	private Sound sound;
-	public SoundManager(String path) {
+	public SoundClip(String path) {
 		this.sound = new Sound("res/Sound/" + path);
 	}
 

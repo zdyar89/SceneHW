@@ -1,3 +1,5 @@
+package Utilities;
+
 public class Scorekeeper {
 	private static Scorekeeper scorekeeper = null;
 	public float score;

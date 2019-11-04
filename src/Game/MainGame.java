@@ -25,6 +25,8 @@ public class MainGame extends Game implements Scene {
     private Scorekeeper scorekeeper;
     private SoundClip boom;
     private Text score;
+    private Text clickDisplay;
+    private int clickCount;
 	
     public MainGame() {
     	initUI(1280,720,"SceneHW");
@@ -35,7 +37,9 @@ public class MainGame extends Game implements Scene {
         marker = new Reticle();
         boom = new SoundClip("boom");
         scorekeeper = Scorekeeper.getInstance();
-        score = new Text(40,Game.ui.getHeight() - (Game.ui.getHeight() / 8), 30, 30, String.valueOf(scorekeeper.score));
+        clickCount = 0;
+        score = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf((int) scorekeeper.score));
+        clickDisplay = new Text(40, Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
     }
 
     @Override
@@ -58,7 +62,10 @@ public class MainGame extends Game implements Scene {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         Vector2f coords = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
 
-        if (gotClick) boom.play();
+        if (gotClick) {
+            boom.play();
+            clickCount++;
+        }
 
         /* Update */
         marker.setLocation(coords);
@@ -68,7 +75,7 @@ public class MainGame extends Game implements Scene {
         scorekeeper.score += delta;
 
         /* Draw */
-        score.draw();
+        drawUI();
         marker.draw();
         player.draw();
 
@@ -93,6 +100,12 @@ public class MainGame extends Game implements Scene {
     }
 
     private void updateUI() {
-        score = new Text(40,Game.ui.getHeight() - (Game.ui.getHeight() / 8), 30, 30, String.valueOf(scorekeeper.score));
+        score = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf((int) scorekeeper.score));
+        clickDisplay = new Text(40,Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
+    }
+
+    private void drawUI() {
+        score.draw();
+        clickDisplay.draw();
     }
 }

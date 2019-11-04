@@ -2,7 +2,6 @@ package Game;
 
 import Entities.Player;
 import Entities.Reticle;
-import Utilities.Scorekeeper;
 import Utilities.SoundClip;
 import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
@@ -22,10 +21,10 @@ public class MainGame extends Game implements Scene {
     private boolean gotClick;
     private Reticle marker;
     private Player player;
-    private Scorekeeper scorekeeper;
     private SoundClip boom;
-    private Text score;
+    private Text time;
     private Text clickDisplay;
+    private int timePassed;
     private int clickCount;
 	
     public MainGame() {
@@ -36,9 +35,9 @@ public class MainGame extends Game implements Scene {
         player = new Player(new Vector2f(Game.ui.getWidth()/8f, Game.ui.getHeight()/1.5f));
         marker = new Reticle();
         boom = new SoundClip("boom");
-        scorekeeper = Scorekeeper.getInstance();
+        timePassed = 0;
         clickCount = 0;
-        score = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf((int) scorekeeper.score));
+        time = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf(timePassed));
         clickDisplay = new Text(40, Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
     }
 
@@ -60,7 +59,7 @@ public class MainGame extends Game implements Scene {
     
     public Scene drawFrame(int delta) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        Vector2f coords = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
+        Vector2f coordinates = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
 
         if (gotClick) {
             boom.play();
@@ -68,11 +67,11 @@ public class MainGame extends Game implements Scene {
         }
 
         /* Update */
-        marker.setLocation(coords);
+        marker.setLocation(coordinates);
         player.update(delta);
         updateUI();
 
-        scorekeeper.score += delta;
+        timePassed += delta;
 
         /* Draw */
         drawUI();
@@ -100,12 +99,18 @@ public class MainGame extends Game implements Scene {
     }
 
     private void updateUI() {
-        score = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf((int) scorekeeper.score));
+        int tengths = timePassed / 100;
+        tengths %= 10;
+        int seconds = timePassed / 1000;
+        seconds %= 60;
+        int minutes = timePassed / 60000;
+        minutes %= 60;
+        time = new Text(40,Game.ui.getHeight() - 100, 30, 30, minutes + ":" + seconds + ":" + tengths);
         clickDisplay = new Text(40,Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
     }
 
     private void drawUI() {
-        score.draw();
+        time.draw();
         clickDisplay.draw();
     }
 }

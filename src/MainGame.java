@@ -24,18 +24,19 @@ public class MainGame extends Game implements Scene {
         GL11.glClearColor(0f, 0f, 0f, 0f);
         player = new Player(new Vector2f(Game.ui.getWidth()/2, Game.ui.getHeight()/2));
         marker = new Reticle();
-        GLFW.glfwSetMouseButtonCallback(Game.ui.getWindow(),
-                new GLFWMouseButtonCallback() {
-                    public void invoke(long window, int button, int action, int mods)
-                    {
-                        if (button==0 && action== GLFW.GLFW_PRESS)
-                        {
-                            Vector2f lastClick = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
-                            gotClick = true;
-                        }
-                    }
-                });
+        GLFW.glfwSetMouseButtonCallback(Game.ui.getWindow(), clickback);
     }
+
+    private GLFWMouseButtonCallback clickback = new GLFWMouseButtonCallback() {
+        public void invoke(long window, int button, int action, int mods)
+        {
+            if (button==0 && action== GLFW.GLFW_PRESS)
+            {
+                Vector2f lastClick = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
+                gotClick = true;
+            }
+        }
+    };
     
     public Scene drawFrame(int delta) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

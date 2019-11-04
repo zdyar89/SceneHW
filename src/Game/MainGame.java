@@ -1,5 +1,9 @@
+package Game;
+
 import Entities.Player;
 import Entities.Reticle;
+import Utilities.Scorekeeper;
+import Utilities.SoundClip;
 import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
 import org.lwjgl.glfw.GLFW;
@@ -10,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 public class MainGame extends Game implements Scene {
-    private static MainGame game;
+    public static MainGame game;
 
     public static void main(String[] args) {
         game = new MainGame();
@@ -23,6 +27,7 @@ public class MainGame extends Game implements Scene {
         game.gameLoop();
     }
 
+    public static final float GRAVITY = 1;
     private boolean gotClick = false;
     private Reticle marker;
     private Player player;

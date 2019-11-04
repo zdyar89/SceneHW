@@ -3,19 +3,24 @@ package Entities;
 import edu.utc.game.Game;
 import edu.utc.game.GameObject;
 import edu.utc.game.Math.Vector2f;
+import edu.utc.game.Texture;
 import org.lwjgl.glfw.GLFW;
+import Game.MainGame;
 
 public class Player extends GameObject {
-	private Vector2f location;
+	private Vector2f pos;
+	private Vector2f direction;
+	private Texture texture;
+	private float speed;
+	private float weight;
 
 	public Player(Vector2f origin) {
-		this.hitbox.setBounds((int) origin.x, (int) origin.y, 25, 25);
-		location = origin;
-		this.setColor(1, 1, 1);
-	}
-
-	public Vector2f getLocation() {
-		return this.location;
+		this.hitbox.setBounds((int) origin.x, (int) origin.y, 30, 30);
+		this.pos = origin;
+		this.texture = new Texture("res/Textures/kirby.png");
+		this.direction = new Vector2f(0, 0);
+		this.speed = .04f;
+		this.weight = 0.01f;
 	}
 
 	@Override
@@ -25,19 +30,48 @@ public class Player extends GameObject {
 
 	@Override
 	public void update(int delta) {
+		direction = new Vector2f(0, 0);
+
 		if (Game.ui.keyPressed(GLFW.GLFW_KEY_A)) {
-			this.location.x -= 10;
+			direction.x -= 10;
 		}
 		if (Game.ui.keyPressed(GLFW.GLFW_KEY_D)) {
-			this.location.x += 10;
+			direction.x += 10;
 		}
-		if (Game.ui.keyPressed(GLFW.GLFW_KEY_W)) {
-			this.location.y -= 10;
+
+		fall();
+		move(delta);
+		fitToBounds(delta);
+		adjustHitBox();
+	}
+
+	@Override
+	public void draw() {
+		texture.draw(this);
+	}
+
+	private void fall() {
+		direction.y = MainGame.GRAVITY * weight;
+	}
+
+	private void move(int delta) {
+		pos.x += direction.x * delta * speed;
+		pos.y += direction.y * delta * speed;
+	}
+
+	private void adjustHitBox() {
+		hitbox.x = (int) pos.x;
+		hitbox.y = (int) pos.y;
+	}
+
+	private void fitToBounds(int delta) {
+		int newX = (int) (direction.x * delta * speed);
+		int newY = (int) (direction.y * delta * speed);
+		if (newX < 0 || newX + hitbox.width > Game.ui.getWidth()) {
+			direction.x = 0;
 		}
-		if (Game.ui.keyPressed(GLFW.GLFW_KEY_S)) {
-			this.location.y += 10;
+		if (newY < 0 || newY + hitbox.height > Game.ui.getHeight()) {
+			direction.y = 0;
 		}
-		this.hitbox.x = (int) this.location.x;
-		this.hitbox.y = (int) this.location.y;
 	}
 }

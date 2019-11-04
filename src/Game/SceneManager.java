@@ -5,7 +5,7 @@ import edu.utc.game.SimpleMenu;
 import static Game.MainGame.game;
 
 class SceneManager {
-	static void Run() {
+	static void run() {
 		game = new MainGame();
 		game.registerGlobalCallbacks();
 		SimpleMenu mainMenu = new SimpleMenu();

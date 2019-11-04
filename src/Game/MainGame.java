@@ -2,7 +2,6 @@ package Game;
 
 import Entities.Player;
 import Entities.Reticle;
-import Utilities.Scorekeeper;
 import Utilities.SoundClip;
 import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
@@ -15,23 +14,31 @@ public class MainGame extends Game implements Scene {
     public static MainGame game;
 
     public static void main(String[] args) {
-        SceneManager.Run();
+        SceneManager.run();
     }
 
     public static final float GRAVITY = 9.8f;
     private boolean gotClick;
     private Reticle marker;
     private Player player;
-    private Scorekeeper scorekeeper;
-    private SoundClip soundManager;
+    private SoundClip boom;
+    private Text time;
+    private Text clickDisplay;
+    private int timePassed;
+    private int clickCount;
 	
     public MainGame() {
     	initUI(1280,720,"SceneHW");
         GL11.glClearColor(.9f, .9f, .9f, 0f);
+        Game.ui.enableMouseCursor(false);
         gotClick = false;
-        player = new Player(new Vector2f(Game.ui.getWidth()/7, Game.ui.getHeight()/1.5f));
+        player = new Player(new Vector2f(Game.ui.getWidth()/8f, Game.ui.getHeight()/1.5f));
         marker = new Reticle();
-        scorekeeper = Scorekeeper.getInstance();
+        boom = new SoundClip("boom");
+        timePassed = 0;
+        clickCount = 0;
+        time = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf(timePassed));
+        clickDisplay = new Text(40, Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
     }
 
     @Override
@@ -52,13 +59,22 @@ public class MainGame extends Game implements Scene {
     
     public Scene drawFrame(int delta) {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        Vector2f coords = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
+        Vector2f coordinates = new Vector2f(Game.ui.getMouseLocation().x, Game.ui.getMouseLocation().y);
+
+        if (gotClick) {
+            boom.play();
+            clickCount++;
+        }
 
         /* Update */
-        marker.setLocation(coords);
+        marker.setLocation(coordinates);
         player.update(delta);
+        updateUI();
+
+        timePassed += delta;
 
         /* Draw */
+        drawUI();
         marker.draw();
         player.draw();
 
@@ -80,5 +96,21 @@ public class MainGame extends Game implements Scene {
 
     private <T extends GameObject> void deactivate(List<T> objects) {
         objects.removeIf(o -> !o.isActive());
+    }
+
+    private void updateUI() {
+        int tengths = timePassed / 100;
+        tengths %= 10;
+        int seconds = timePassed / 1000;
+        seconds %= 60;
+        int minutes = timePassed / 60000;
+        minutes %= 60;
+        time = new Text(40,Game.ui.getHeight() - 100, 30, 30, minutes + ":" + seconds + ":" + tengths);
+        clickDisplay = new Text(40,Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
+    }
+
+    private void drawUI() {
+        time.draw();
+        clickDisplay.draw();
     }
 }

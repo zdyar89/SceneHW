@@ -7,7 +7,6 @@ import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
-import sun.applet.Main;
 
 import java.util.List;
 
@@ -25,8 +24,8 @@ public class MainGame extends Game implements Scene {
     private SoundClip boom;
     private Text time;
     private Text clickDisplay;
-    public int timePassed;
-    public int clickCount;
+    public long timePassed;
+    public long clickCount;
 
     public void reset() {
         timePassed = 0;
@@ -89,6 +88,9 @@ public class MainGame extends Game implements Scene {
         marker.draw();
         player.draw();
 
+        /* End */
+        if (clickCount == 10) SceneManager.end();
+
         gotClick = false;
         return this;
     }
@@ -110,11 +112,11 @@ public class MainGame extends Game implements Scene {
     }
 
     private void updateUI() {
-        int tengths = timePassed / 100;
+        long tengths = timePassed / 100;
         tengths %= 10;
-        int seconds = timePassed / 1000;
+        long seconds = timePassed / 1000;
         seconds %= 60;
-        int minutes = timePassed / 60000;
+        long minutes = timePassed / 60000;
         minutes %= 60;
         time = new Text(40,Game.ui.getHeight() - 100, 30, 30, minutes + ":" + seconds + ":" + tengths);
         clickDisplay = new Text(40,Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));

@@ -1,5 +1,6 @@
 package Game;
 
+import VFX.Background;
 import edu.utc.game.Scene;
 import edu.utc.game.SimpleMenu;
 
@@ -34,5 +35,10 @@ class SceneManager {
 		pauseMenu.addItem(new SimpleMenu.SelectableText(20, 140, 20, 20, String.valueOf(game.clickCount), 1, 1, 0, 1, 1, 1), game);
 		pauseMenu.select(0);
 		changeScene(pauseMenu);
+	}
+
+	static void end() {
+		Background endBackground = new Background();
+		changeScene(endBackground);
 	}
 }

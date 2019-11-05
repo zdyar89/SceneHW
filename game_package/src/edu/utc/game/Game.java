@@ -1,16 +1,10 @@
 package edu.utc.game;
-import static org.lwjgl.glfw.GLFW.glfwGetTime;
-import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-
-
-import static org.lwjgl.glfw.GLFW.glfwPollEvents;
-import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
-
+import static org.lwjgl.glfw.GLFW.*;
 
 
 public abstract class Game {
@@ -42,6 +36,9 @@ public abstract class Game {
 			currScene = currScene.drawFrame((int)(1000*(time2-time)));
 			glfwSwapBuffers(ui.getWindow());
 			time=time2;
+			if (ui.keyPressed(GLFW_KEY_ESCAPE)) {
+				glfwSetWindowShouldClose(ui.getWindow(), true);
+			}
 
 		}
 		ui.destroy();
@@ -67,8 +64,5 @@ public abstract class Game {
 						currScene.onKeyEvent(key, scancode, action, mods);
 					}
 				});
-				
-		
 	}
-
 }

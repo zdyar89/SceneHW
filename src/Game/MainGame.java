@@ -3,6 +3,7 @@ package Game;
 import Entities.Player;
 import Entities.Reticle;
 import Utilities.SoundClip;
+import Utilities.SoundManager;
 import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
 import org.lwjgl.glfw.GLFW;
@@ -26,10 +27,14 @@ public class MainGame extends Game implements Scene {
     private Text clickDisplay;
     public long timePassed;
     public long clickCount;
+    public SoundClip backgroundMusic;
 
     public void reset() {
         timePassed = 0;
         clickCount = 0;
+        backgroundMusic = new SoundClip("tridentkeep");
+        backgroundMusic.loop();
+        SoundManager.add(backgroundMusic);c
     }
 	
     public MainGame() {
@@ -39,11 +44,14 @@ public class MainGame extends Game implements Scene {
         player = new Player(new Vector2f(Game.ui.getWidth()/8f, Game.ui.getHeight()/1.5f));
         marker = new Reticle();
         boom = new SoundClip("boom");
+        backgroundMusic = new SoundClip("tridentkeep");
+        backgroundMusic.loop();
+        SoundManager.add(backgroundMusic);
         timePassed = 0;
         clickCount = 0;
         time = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf(timePassed));
         clickDisplay = new Text(40, Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
-        //Game.ui.enableMouseCursor(false);
+        Game.ui.enableMouseCursor(false);
     }
 
     @Override

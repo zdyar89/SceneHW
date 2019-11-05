@@ -31,6 +31,7 @@ class SceneManager {
 		pauseMenu.addItem(new SimpleMenu.SelectableText(20, 20, 20, 20, "Continue", 1, 0, 0, 1, 1, 1), game);
 		pauseMenu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Main Menu", 0, 1, 0, 1, 1, 1), mainMenu);
 		pauseMenu.addItem(new SimpleMenu.SelectableText(20, 100, 20, 20, "Exit Game", 0, 0, 1, 1, 1, 1), null);
+		pauseMenu.addItem(new SimpleMenu.SelectableText(20, 140, 20, 20, String.valueOf(game.clickCount), 1, 1, 0, 1, 1, 1), game);
 		pauseMenu.select(0);
 		changeScene(pauseMenu);
 	}

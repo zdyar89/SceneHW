@@ -7,6 +7,7 @@ import edu.utc.game.*;
 import edu.utc.game.Math.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
+import sun.applet.Main;
 
 import java.util.List;
 
@@ -24,13 +25,17 @@ public class MainGame extends Game implements Scene {
     private SoundClip boom;
     private Text time;
     private Text clickDisplay;
-    private int timePassed;
-    private int clickCount;
+    public int timePassed;
+    public int clickCount;
+
+    public void reset() {
+        timePassed = 0;
+        clickCount = 0;
+    }
 	
     public MainGame() {
-    	initUI(1280,720,"SceneHW");
+        initUI(1280,720,"SceneHW");
         GL11.glClearColor(.9f, .9f, .9f, 0f);
-        Game.ui.enableMouseCursor(false);
         gotClick = false;
         player = new Player(new Vector2f(Game.ui.getWidth()/8f, Game.ui.getHeight()/1.5f));
         marker = new Reticle();
@@ -39,6 +44,12 @@ public class MainGame extends Game implements Scene {
         clickCount = 0;
         time = new Text(40,Game.ui.getHeight() - 100, 30, 30, String.valueOf(timePassed));
         clickDisplay = new Text(40, Game.ui.getHeight() - 50, 30, 30, String.valueOf(clickCount));
+        //Game.ui.enableMouseCursor(false);
+    }
+
+    @Override
+    public String getName() {
+        return "Main";
     }
 
     @Override
@@ -67,9 +78,9 @@ public class MainGame extends Game implements Scene {
         }
 
         /* Update */
+        updateUI();
         marker.setLocation(coordinates);
         player.update(delta);
-        updateUI();
 
         timePassed += delta;
 

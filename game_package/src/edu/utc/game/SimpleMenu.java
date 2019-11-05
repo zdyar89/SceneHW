@@ -1,5 +1,6 @@
 package edu.utc.game;
 
+import Utilities.SoundManager;
 import org.lwjgl.system.Callback;
 
 import Game.MainGame;
@@ -152,6 +153,7 @@ public class SimpleMenu implements Scene {
 	public Scene draw(int delta) {
 		if (go) {
 			if (items.get(selected).scene.getName().equals("mMenu")) {
+				SoundManager.stop();
 				game.reset();
 			}
 			return items.get(selected).scene;

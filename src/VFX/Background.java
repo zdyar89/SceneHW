@@ -1,23 +1,23 @@
 package VFX;
 
 import Utilities.SoundClip;
-import edu.utc.game.Game;
-import edu.utc.game.Scene;
-import edu.utc.game.SimpleMenu;
-import edu.utc.game.Texture;
+import Utilities.SoundManager;
+import edu.utc.game.*;
 import org.lwjgl.opengl.GL11;
 import static Game.MainGame.game;
 
 public class Background implements Scene {
-	private SoundClip music;
+	public SoundClip music;
 	private Texture background;
 	private Wallpaper one, two;
 	private SimpleMenu menu;
 
 	public Background(Scene mainMenu) {
 		GL11.glClearColor(0f, 0f, 0f, 0f);
+		SoundManager.stop();
 		background = new Texture("res/Textures/kirby.png");
-		music = new SoundClip("boom");
+		music = new SoundClip("endOrchestra");
+		SoundManager.add(music);
 		one = new Wallpaper(0, Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		two = new Wallpaper(Game.ui.getWidth(), Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		menu = new SimpleMenu("EndMenu");

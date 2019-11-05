@@ -1,5 +1,10 @@
 package edu.utc.game;
 
+import org.lwjgl.system.Callback;
+
+import Game.MainGame;
+
+import static Game.MainGame.game;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -22,7 +27,7 @@ public class SimpleMenu implements Scene {
 		private float activeR, activeG, activeB;
 		private float inactiveR, inactiveG, inactiveB;
 
-		public SelectableText(int x, int y, int w, int h, String text, 
+		public SelectableText(int x, int y, int w, int h, String text,
 				float aR, float aG, float aB, float iR, float iG, float iB)
 		{
 			super(x,y,w,h,text);
@@ -60,15 +65,22 @@ public class SimpleMenu implements Scene {
 
 	}
 
-	private LinkedList<Item> items;
-	private int selected;
+	public LinkedList<Item> items;
+	public int selected;
 	private boolean go=false;
+	private String name;
 
-	public SimpleMenu()
+	public SimpleMenu(String name)
 	{
 		items=new LinkedList<>();
 		selected=0;
 		go=false;
+		this.name = name;
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 	public void reset()
@@ -93,8 +105,8 @@ public class SimpleMenu implements Scene {
 	{
 		go=true;
 	}
-	
-	public void onKeyEvent(int key, int scancode, int action, int mods)  
+
+	public void onKeyEvent(int key, int scancode, int action, int mods)
 	{
 		if (action==org.lwjgl.glfw.GLFW.GLFW_PRESS)
 		{
@@ -111,7 +123,7 @@ public class SimpleMenu implements Scene {
 				go();
 			}
 		}
-		
+
 	};
 
 
@@ -120,16 +132,36 @@ public class SimpleMenu implements Scene {
 		glClearColor(.0f, .0f, .0f, .0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
 
-		if (go) { return items.get(selected).scene; }
+		if (go) {
+			if (items.get(selected).scene.getName().equals("mMenu")) {
+				game.reset();
+			}
+			return items.get(selected).scene;
+		}
 
 		for (Item item : items)
-		{	
+		{
 			item.label.update(delta);
 			item.label.draw();
 		}
 
 		return this;
 
+	}
+
+	public Scene draw(int delta) {
+		if (go) {
+			if (items.get(selected).scene.getName().equals("mMenu")) {
+				game.reset();
+			}
+			return items.get(selected).scene;
+		}
+		for (Item item : items)
+		{
+			item.label.update(delta);
+			item.label.draw();
+		}
+		return null;
 	}
 
 }

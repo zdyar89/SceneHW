@@ -9,6 +9,10 @@ import java.util.Random;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TextDemo extends Game implements Scene {
+    public String getName() {
+        return "TextDemo";
+    }
+
     public static void main(String[] args)
     {
         // construct a DemoGame object and launch the game loop

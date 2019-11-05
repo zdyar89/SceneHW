@@ -17,6 +17,10 @@ public class DemoGame extends Game implements Scene {
 	
 	private static java.util.Random rand=new java.util.Random();
 
+	public String getName() {
+		return "Demo";
+	}
+
 	
 	public static void main(String[] args)
 	{
@@ -28,7 +32,7 @@ public class DemoGame extends Game implements Scene {
 		DemoGame game=new DemoGame();
 		game.registerGlobalCallbacks();
 
-		SimpleMenu menu = new SimpleMenu();
+		SimpleMenu menu = new SimpleMenu("mMenu");
 		menu.addItem(new SimpleMenu.SelectableText(20, 20, 20, 20, "Launch Game", 1, 0, 0, 1, 1, 1), game);
 		menu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Exit", 1, 0, 0, 1, 1, 1), null);
 		menu.select(0);
@@ -36,6 +40,7 @@ public class DemoGame extends Game implements Scene {
 		game.setScene(menu);
 		game.gameLoop();
 	}
+
 
 	
 	// DemoGame instance data

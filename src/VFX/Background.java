@@ -11,13 +11,17 @@ public class Background implements Scene {
 	private SoundClip music;
 	private Texture background;
 	private Wallpaper one, two;
+	private SimpleMenu menu;
 
-	public Background() {
+	public Background(Scene mainMenu) {
 		GL11.glClearColor(0f, 0f, 0f, 0f);
 		background = new Texture("res/Textures/kirby.png");
 		music = new SoundClip("kommSusserTod");
 		one = new Wallpaper(0, Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		two = new Wallpaper(Game.ui.getWidth(), Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
+		menu = new SimpleMenu("EndMenu");
+		menu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Main Menu", 0, 1, 0, 1, 1, 1), mainMenu);
+		menu.addItem(new SimpleMenu.SelectableText(20, 100, 20, 20, "Exit Game", 0, 0, 1, 1, 1, 1), null);
 	}
 
 	public String getName() {
@@ -30,6 +34,11 @@ public class Background implements Scene {
 		background.draw(two);
 		if (!music.isLooping) music.loop();
 		adjustBackgrounds(one, two);
+		Scene mainMenu = menu.draw(delta);
+		if (mainMenu != null) {
+			music.stop();
+			return mainMenu;
+		}
 		return this;
 	}
 
@@ -42,6 +51,22 @@ public class Background implements Scene {
 		if (two.getHitbox().x >= width) two.setWidth(-width);
 	}
 
-	public void onKeyEvent(int key, int scancode, int action, int mods)  { }
+	public void onKeyEvent(int key, int scancode, int action, int mods)  {
+		if (action==org.lwjgl.glfw.GLFW.GLFW_PRESS)
+		{
+			if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_UP)
+			{
+				menu.select((menu.selected+menu.items.size()-1)%menu.items.size());
+			}
+			else if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN)
+			{
+				menu.select((menu.selected+1)%menu.items.size());
+			}
+			else if (key == org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER)
+			{
+				menu.go();
+			}
+		}
+	}
 	public void onMouseEvent(int button, int action, int mods)  { }
 }

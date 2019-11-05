@@ -38,7 +38,11 @@ class SceneManager {
 	}
 
 	static void end() {
-		Background endBackground = new Background();
+		SimpleMenu mainMenu = new SimpleMenu("mMenu");
+		mainMenu.addItem(new SimpleMenu.SelectableText(20, 20, 20, 20, "Launch Game", 1, 0, 0, 1, 1, 1), game);
+		mainMenu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Exit", 1, 0, 0, 1, 1, 1), null);
+		mainMenu.select(0);
+		Background endBackground = new Background(mainMenu);
 		changeScene(endBackground);
 	}
 }

@@ -6,6 +6,7 @@ import edu.utc.game.Scene;
 import edu.utc.game.SimpleMenu;
 import edu.utc.game.Texture;
 import org.lwjgl.opengl.GL11;
+import static Game.MainGame.game;
 
 public class Background implements Scene {
 	private SoundClip music;
@@ -16,12 +17,14 @@ public class Background implements Scene {
 	public Background(Scene mainMenu) {
 		GL11.glClearColor(0f, 0f, 0f, 0f);
 		background = new Texture("res/Textures/kirby.png");
-		music = new SoundClip("kommSusserTod");
+		music = new SoundClip("boom");
 		one = new Wallpaper(0, Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		two = new Wallpaper(Game.ui.getWidth(), Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		menu = new SimpleMenu("EndMenu");
 		menu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Main Menu", 0, 1, 0, 1, 1, 1), mainMenu);
 		menu.addItem(new SimpleMenu.SelectableText(20, 100, 20, 20, "Exit Game", 0, 0, 1, 1, 1, 1), null);
+		menu.addItem(new SimpleMenu.SelectableText(200, 60, 20, 20, "Clicks: " + game.clickCount, 0, 0, 1, 1, 1, 1), null);
+		menu.addItem(new SimpleMenu.SelectableText(200, 100, 20, 20, "Seconds passed: " + ((game.timePassed / 1000) % 60), 0, 0, 1, 1, 1, 1), null);
 	}
 
 	public String getName() {

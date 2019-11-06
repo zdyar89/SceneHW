@@ -21,10 +21,10 @@ public class Background implements Scene {
 		one = new Wallpaper(0, Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		two = new Wallpaper(Game.ui.getWidth(), Game.ui.getHeight()/2, Game.ui.getWidth(), Game.ui.getHeight() / 2);
 		menu = new SimpleMenu("EndMenu");
-		menu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Main Menu", 0, 1, 0, 1, 1, 1), mainMenu);
+		menu.addItem(new SimpleMenu.SelectableText(20, 60, 20, 20, "Main Menu", 1, 0, 0, 1, 1, 1), mainMenu);
 		menu.addItem(new SimpleMenu.SelectableText(20, 100, 20, 20, "Exit Game", 0, 0, 1, 1, 1, 1), null);
-		menu.addItem(new SimpleMenu.SelectableText(200, 60, 20, 20, "Clicks: " + game.clickCount, 0, 0, 1, 1, 1, 1), null);
-		menu.addItem(new SimpleMenu.SelectableText(200, 100, 20, 20, "Seconds passed: " + ((game.timePassed / 1000) % 60), 0, 0, 1, 1, 1, 1), null);
+		menu.addItem(new SimpleMenu.SelectableText(200, 60, 20, 20, "Clicks: " + game.clickCount, 1, 0, 1, 1, 1, 1), null);
+		menu.addItem(new SimpleMenu.SelectableText(200, 100, 20, 20, "Seconds passed: " + ((game.timePassed / 1000) % 60), 0, 1, 1, 1, 1, 1), null);
 	}
 
 	public String getName() {

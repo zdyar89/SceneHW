@@ -34,7 +34,7 @@ public class MainGame extends Game implements Scene {
         clickCount = 0;
         backgroundMusic = new SoundClip("tridentkeep");
         backgroundMusic.loop();
-        SoundManager.add(backgroundMusic);c
+        SoundManager.add(backgroundMusic);
     }
 	
     public MainGame() {
